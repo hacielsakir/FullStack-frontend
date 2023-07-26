@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Import Axios
 
 import './Components.css';
+import { Button } from '@mui/material';
 
 export const PdfInput = () => {
     const [name, setName] = useState('');
@@ -10,7 +11,7 @@ export const PdfInput = () => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        const docPdf = { name, des };
+        const docPdf = { name, description: des};
         console.log(docPdf);
 
         // Use Axios to make the POST request
@@ -19,10 +20,37 @@ export const PdfInput = () => {
         })
         .then(() => {
             console.log('New Pdf Added');
+            
+            axios.get("http://localhost:8080/docPdf/getAll")
+                    .then(response => {
+                        setPdfs(response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching PDFs:', error);
+                    });
         })
         .catch((error) => {
             console.error('Error adding the PDF:', error);
         });
+    };
+
+    const handleDelete = (id) => {
+        // Use Axios to make the DELETE request
+        axios.delete(`http://localhost:8080/docPdf/delete/${id}`)
+            .then(() => {
+                console.log('Pdf Deleted');
+
+                axios.get("http://localhost:8080/docPdf/getAll")
+                    .then(response => {
+                        setPdfs(response.data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching PDFs:', error);
+                    });
+            })
+            .catch((error) => {
+                console.error('Error deleting the PDF:', error);
+            });
     };
 
     useEffect(() => {
@@ -67,9 +95,10 @@ export const PdfInput = () => {
                 {pdfs.map(docPdf=>(
                     <ul key={docPdf.id}>
                         <li>
-                            Id:{docPdf.id}
-                            Name:{docPdf.name}
-                            Description:{docPdf.description}
+                            Id:{docPdf.id} <br/>
+                            Name:{docPdf.name} <br/>
+                            Description:{docPdf.description} <br/>
+                            <Button variant="contained" onClick={() => handleDelete(docPdf.id)}>Delete</Button>
                         </li>
                     </ul>
                 )
