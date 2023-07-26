@@ -1,0 +1,18 @@
+body {
+    background-image: url(./Components/P6160578.jpg);
+    font-family: Tektur;
+}
+
+@font-face {
+    font-family: Tektur;
+    src: url(/Users/macbookm1/Desktop/my-app/src/Components/Tektur-VariableFont_wdth,wght.ttf);
+  }
+
+
+.searchBar {
+    margin: auto;
+}
+
+br {
+    margin: 15px 0;
+}
