@@ -91,7 +91,7 @@ export const PdfInput = () => {
             </form>
 
 
-            <div>
+            <div className='outputPdf'>
                 {pdfs.map(docPdf=>(
                     <ul key={docPdf.id}>
                         <li>
